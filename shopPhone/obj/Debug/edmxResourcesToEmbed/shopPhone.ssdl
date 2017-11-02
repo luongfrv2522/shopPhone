@@ -1,0 +1,147 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="ShopDienThoaiModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="brand">
+    <Key>
+      <PropertyRef Name="id_brand" />
+    </Key>
+    <Property Name="id_brand" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="brand_name" Type="nvarchar" MaxLength="50" />
+    <Property Name="description" Type="nvarchar" MaxLength="255" />
+    <Property Name="image_feature" Type="nvarchar" MaxLength="255" />
+    <Property Name="status" Type="int" />
+    <Property Name="created_at" Type="datetime" />
+    <Property Name="updated_at" Type="datetime" />
+  </EntityType>
+  <EntityType Name="gallery">
+    <Key>
+      <PropertyRef Name="id_gallery" />
+    </Key>
+    <Property Name="id_gallery" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="gallery_name" Type="nvarchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="phone">
+    <Key>
+      <PropertyRef Name="id_phone" />
+    </Key>
+    <Property Name="id_phone" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="phone_name" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="description" Type="nvarchar" MaxLength="255" />
+    <Property Name="image_feature" Type="nvarchar" MaxLength="255" />
+    <Property Name="price" Type="money" />
+    <Property Name="status" Type="int" />
+    <Property Name="position" Type="int" />
+    <Property Name="id_brand" Type="int" />
+    <Property Name="created_at" Type="datetime" />
+    <Property Name="updated_at" Type="datetime" />
+  </EntityType>
+  <EntityType Name="rela_brand_phone">
+    <Key>
+      <PropertyRef Name="id_phone" />
+    </Key>
+    <Property Name="id_brand" Type="int" Nullable="false" />
+    <Property Name="id_phone" Type="int" Nullable="false" />
+    <Property Name="position" Type="int" />
+  </EntityType>
+  <EntityType Name="rela_phone_gallery">
+    <Key>
+      <PropertyRef Name="id_phone" />
+      <PropertyRef Name="id_gallery" />
+    </Key>
+    <Property Name="id_phone" Type="int" Nullable="false" />
+    <Property Name="id_gallery" Type="int" Nullable="false" />
+    <Property Name="position" Type="int" />
+  </EntityType>
+  <EntityType Name="sysdiagrams">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+    <Property Name="principal_id" Type="int" Nullable="false" />
+    <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="version" Type="int" />
+    <Property Name="definition" Type="varbinary(max)" />
+  </EntityType>
+  <EntityType Name="users">
+    <Key>
+      <PropertyRef Name="id_user" />
+    </Key>
+    <Property Name="id_user" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="username" Type="nvarchar" MaxLength="50" />
+    <Property Name="password" Type="nvarchar" MaxLength="50" />
+    <Property Name="fullname" Type="nvarchar" MaxLength="50" />
+    <Property Name="image_feature" Type="nvarchar" MaxLength="50" />
+  </EntityType>
+  <Association Name="FK_rela_brand_phone_brand">
+    <End Role="brand" Type="Self.brand" Multiplicity="1" />
+    <End Role="rela_brand_phone" Type="Self.rela_brand_phone" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="brand">
+        <PropertyRef Name="id_brand" />
+      </Principal>
+      <Dependent Role="rela_brand_phone">
+        <PropertyRef Name="id_brand" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_rela_brand_phone_phone">
+    <End Role="phone" Type="Self.phone" Multiplicity="1" />
+    <End Role="rela_brand_phone" Type="Self.rela_brand_phone" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="phone">
+        <PropertyRef Name="id_phone" />
+      </Principal>
+      <Dependent Role="rela_brand_phone">
+        <PropertyRef Name="id_phone" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_rela_phone_gallery_gallery">
+    <End Role="gallery" Type="Self.gallery" Multiplicity="1" />
+    <End Role="rela_phone_gallery" Type="Self.rela_phone_gallery" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="gallery">
+        <PropertyRef Name="id_gallery" />
+      </Principal>
+      <Dependent Role="rela_phone_gallery">
+        <PropertyRef Name="id_gallery" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_rela_phone_gallery_phone">
+    <End Role="phone" Type="Self.phone" Multiplicity="1" />
+    <End Role="rela_phone_gallery" Type="Self.rela_phone_gallery" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="phone">
+        <PropertyRef Name="id_phone" />
+      </Principal>
+      <Dependent Role="rela_phone_gallery">
+        <PropertyRef Name="id_phone" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="ShopDienThoaiModelStoreContainer">
+    <EntitySet Name="brand" EntityType="Self.brand" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="gallery" EntityType="Self.gallery" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="phone" EntityType="Self.phone" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="rela_brand_phone" EntityType="Self.rela_brand_phone" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="rela_phone_gallery" EntityType="Self.rela_phone_gallery" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="users" EntityType="Self.users" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK_rela_brand_phone_brand" Association="Self.FK_rela_brand_phone_brand">
+      <End Role="brand" EntitySet="brand" />
+      <End Role="rela_brand_phone" EntitySet="rela_brand_phone" />
+    </AssociationSet>
+    <AssociationSet Name="FK_rela_brand_phone_phone" Association="Self.FK_rela_brand_phone_phone">
+      <End Role="phone" EntitySet="phone" />
+      <End Role="rela_brand_phone" EntitySet="rela_brand_phone" />
+    </AssociationSet>
+    <AssociationSet Name="FK_rela_phone_gallery_gallery" Association="Self.FK_rela_phone_gallery_gallery">
+      <End Role="gallery" EntitySet="gallery" />
+      <End Role="rela_phone_gallery" EntitySet="rela_phone_gallery" />
+    </AssociationSet>
+    <AssociationSet Name="FK_rela_phone_gallery_phone" Association="Self.FK_rela_phone_gallery_phone">
+      <End Role="phone" EntitySet="phone" />
+      <End Role="rela_phone_gallery" EntitySet="rela_phone_gallery" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

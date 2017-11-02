@@ -1,0 +1,48 @@
+﻿
+@{
+    ViewBag.Title = "ListPhones";
+    Layout = "~/Views/Shared/shopLayout.cshtml";
+    List<phone> list = Model;
+    ShopDienThoaiEntities db = new ShopDienThoaiEntities();
+}
+
+<div class="listPhones">
+    <div class="left_content">
+
+    </div>
+
+    <div class="list_contents">
+        <div class="filter_bar">
+            <div class="sort_list">
+                <div class="active_now">
+                    <span>giá cao đến thấp</span>
+                </div>
+                <div class="group_sort_list">
+                    <a href="@Url.Action("ListPhones",null,new {SortParam = "sort_price_up" })">Giá thấp đến cao</a>
+                    <a href="@Url.Action("ListPhones",null,new {SortParam = "sort_price_down" })">Giá cao đến thấp</a>
+                    <a href="@Url.Action("ListPhones",null,new {SortParam = "" })">Yêu thích</a>
+                </div>
+
+            </div>
+        </div>
+        <h2>Danh sách điện thoại</h2>
+        <div class="slide_item">
+            <ul>
+                @foreach (var item in list)
+            {
+                    <li>
+                        <a href="@Url.Action("Detail", null, new {ID = item.id_phone })">
+                            <img src="@item.image_feature" class="item" />
+                            <div class="item_info">
+                                <h3>@item.phone_name</h3>
+                                <p>Hãng: @db.brands.Find(item.id_brand).brand_name</p>
+                                <p>Giá: @String.Format("{0:0,0 đ}", item.price)</p>
+                            </div>
+                        </a>
+                    </li>
+                }
+
+            </ul>
+        </div>
+    </div>
+</div>
